@@ -63,7 +63,7 @@ function Dashboard() {
 
         const res =
           await axios.get(
-            "http://localhost:5000/api/tasks",
+            "https://helpful-light-production-003e.up.railway.app/api/tasks",
 
             {
               headers: {
@@ -99,7 +99,7 @@ function Dashboard() {
         const res =
           await axios.get(
 
-            "http://localhost:5000/api/users",
+            "https://helpful-light-production-003e.up.railway.app/api/users",
 
             {
               headers: {
@@ -149,7 +149,7 @@ function Dashboard() {
 
         await axios.post(
 
-          "http://localhost:5000/api/tasks",
+          "https://helpful-light-production-003e.up.railway.app/api/tasks",
 
           {
             title,
@@ -210,7 +210,7 @@ function Dashboard() {
 
         await axios.put(
 
-          `http://localhost:5000/api/tasks/${id}`,
+          `https://helpful-light-production-003e.up.railway.app/api/tasks/${id}`,
 
           {
             status,

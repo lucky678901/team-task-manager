@@ -33,7 +33,7 @@ function Team() {
 
         const res =
           await axios.get(
-            "http://localhost:5000/api/users",
+            "https://helpful-light-production-003e.up.railway.app/api/users",
 
             {
               headers: {

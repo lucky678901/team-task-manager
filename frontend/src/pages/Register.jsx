@@ -61,7 +61,7 @@ function Register() {
 
         await axios.post(
 
-          "http://localhost:5000/api/auth/register",
+          "https://helpful-light-production-003e.up.railway.app/api/auth/register",
 
           {
             name,

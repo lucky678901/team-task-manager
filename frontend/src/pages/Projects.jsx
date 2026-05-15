@@ -43,7 +43,7 @@ function Projects() {
 
         const res =
           await axios.get(
-            "http://localhost:5000/api/projects",
+            "https://helpful-light-production-003e.up.railway.app/api/projects",
 
             {
               headers: {
@@ -78,7 +78,7 @@ function Projects() {
 
         await axios.post(
 
-          "http://localhost:5000/api/projects",
+          "https://helpful-light-production-003e.up.railway.app/api/projects",
 
           {
             title,
