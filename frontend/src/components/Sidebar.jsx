@@ -1,11 +1,11 @@
 import {
-  FaHome,
-  FaTasks,
-  FaUsers,
-  FaCog,
-  FaBars,
-  FaColumns,
-} from "react-icons/fa";
+  Home,
+  FolderKanban,
+  Users,
+  LayoutDashboard,
+  Settings,
+  Menu,
+} from "lucide-react";
 
 import { Link } from "react-router-dom";
 
@@ -13,167 +13,233 @@ function Sidebar({
   isOpen,
   setIsOpen,
 }) {
+
   return (
-    <>
-      {/* TOGGLE BUTTON */}
 
-      <button
-        onClick={() =>
-          setIsOpen(!isOpen)
-        }
+    <div
+      style={{
+       width:
+
+window.innerWidth < 768
+
+? isOpen
+  ? "220px"
+  : "0px"
+
+: isOpen
+? "250px"
+: "80px",
+
+        height: "100vh",
+
+        background:
+          "linear-gradient(180deg,#000000,#111111,#1a1a1a)",
+
+        color: "white",
+
+        position: "fixed",
+
+        left: 0,
+
+        top: 0,
+
+        transition: "0.4s",
+
+        overflow: "hidden",
+
+        paddingTop: "25px",
+
+        borderRight:
+          "1px solid rgba(255,255,255,0.08)",
+
+        zIndex: 999,
+      }}
+    >
+
+      {/* TOGGLE */}
+
+      <div
         style={{
-          position: "fixed",
+          display: "flex",
 
-          top: "20px",
+          justifyContent:
+            isOpen
+              ? "space-between"
+              : "center",
 
-          left: isOpen
-            ? "260px"
-            : "20px",
+          alignItems: "center",
 
-          zIndex: 1000,
+          padding:
+            "0 20px",
 
-          padding: "12px",
+          marginBottom: "40px",
+        }}
+      >
 
-          border: "none",
+        {isOpen && (
 
-          borderRadius: "12px",
+          <h1
+            style={{
+              fontSize: "32px",
+
+              fontWeight:
+                "bold",
+            }}
+          >
+            TaskFlow 🚀
+          </h1>
+
+        )}
+
+        <button
+          onClick={() =>
+            setIsOpen(
+              !isOpen
+            )
+          }
+
+          style={{
+            background:
+              "linear-gradient(90deg,#6C63FF,#3399FF)",
+
+            border: "none",
+
+            padding: "12px",
+
+            borderRadius:
+              "14px",
+
+            color: "white",
+
+            cursor: "pointer",
+          }}
+        >
+          <Menu size={22} />
+        </button>
+
+      </div>
+
+      {/* MENU */}
+
+      <div
+        style={{
+          display: "flex",
+
+          flexDirection:
+            "column",
+
+          gap: "18px",
+
+          padding: "0 15px",
+        }}
+      >
+
+        <SidebarItem
+          icon={<Home />}
+          text="Dashboard"
+          isOpen={isOpen}
+          link="/dashboard"
+        />
+
+        <SidebarItem
+          icon={<FolderKanban />}
+          text="Projects"
+          isOpen={isOpen}
+          link="/projects"
+        />
+
+        <SidebarItem
+          icon={<Users />}
+          text="Team"
+          isOpen={isOpen}
+          link="/team"
+        />
+
+        <SidebarItem
+          icon={
+            <LayoutDashboard />
+          }
+          text="Kanban"
+          isOpen={isOpen}
+          link="/kanban"
+        />
+
+        <SidebarItem
+          icon={<Settings />}
+          text="Settings"
+          isOpen={isOpen}
+          link="/settings"
+        />
+
+      </div>
+
+    </div>
+  );
+}
+
+function SidebarItem({
+  icon,
+  text,
+  isOpen,
+  link,
+}) {
+
+  return (
+
+    <Link
+      to={link}
+
+      style={{
+        textDecoration:
+          "none",
+
+        color: "white",
+      }}
+    >
+
+      <div
+        style={{
+          display: "flex",
+
+          alignItems: "center",
+
+          gap: "16px",
+
+          padding:
+            "16px 18px",
+
+          borderRadius: "18px",
 
           cursor: "pointer",
 
           background:
-            "linear-gradient(90deg,#6C63FF,#3399FF)",
-
-          color: "white",
+            "rgba(255,255,255,0.05)",
 
           transition: "0.3s",
         }}
       >
-        <FaBars />
-      </button>
 
-      {/* SIDEBAR */}
+        {icon}
 
-      <div
-        style={{
-          width: "250px",
+        {isOpen && (
 
-          background:
-            "rgba(255,255,255,0.06)",
+          <span
+            style={{
+              fontSize: "20px",
 
-          backdropFilter: "blur(14px)",
-
-          height: "100vh",
-
-          padding: "30px",
-
-          borderRight:
-            "1px solid rgba(255,255,255,0.1)",
-
-          position: "fixed",
-
-          left: isOpen
-            ? "0"
-            : "-260px",
-
-          top: 0,
-
-          color: "white",
-
-          transition: "0.4s",
-
-          zIndex: 999,
-        }}
-      >
-        <h1
-          style={{
-            marginBottom: "50px",
-
-            fontSize: "28px",
-          }}
-        >
-          TaskFlow 
-        </h1>
-
-        <nav
-          style={{
-            display: "flex",
-
-            flexDirection: "column",
-
-            gap: "20px",
-          }}
-        >
-          <Link
-            to="/dashboard"
-            style={linkStyle}
+              fontWeight:
+                "500",
+            }}
           >
-            <FaHome />
+            {text}
+          </span>
 
-            Dashboard
-          </Link>
+        )}
 
-          <Link
-            to="/projects"
-            style={linkStyle}
-          >
-            <FaTasks />
-
-            Projects
-          </Link>
-
-          <Link
-            to="/team"
-            style={linkStyle}
-          >
-            <FaUsers />
-
-            Team
-          </Link>
-
-          <Link
-            to="/kanban"
-            style={linkStyle}
-          >
-            <FaColumns />
-
-            Kanban
-          </Link>
-
-          <Link
-            to="/settings"
-            style={linkStyle}
-          >
-            <FaCog />
-
-            Settings
-          </Link>
-        </nav>
       </div>
-    </>
+
+    </Link>
   );
 }
-
-const linkStyle = {
-  color: "white",
-
-  textDecoration: "none",
-
-  display: "flex",
-
-  alignItems: "center",
-
-  gap: "12px",
-
-  fontSize: "18px",
-
-  padding: "14px",
-
-  borderRadius: "14px",
-
-  background:
-    "rgba(255,255,255,0.05)",
-
-  transition: "0.3s",
-};
 
 export default Sidebar;

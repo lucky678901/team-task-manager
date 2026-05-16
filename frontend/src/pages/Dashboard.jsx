@@ -4,8 +4,6 @@ import axios from "axios";
 
 import Sidebar from "../components/Sidebar";
 
-import Notifications from "../components/Notifications";
-
 import {
   PieChart,
   Pie,
@@ -13,6 +11,13 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+
+import {
+  Activity,
+  CheckCircle,
+  Clock3,
+  TrendingUp,
+} from "lucide-react";
 
 function Dashboard() {
 
@@ -63,6 +68,7 @@ function Dashboard() {
 
         const res =
           await axios.get(
+
             "https://helpful-light-production-003e.up.railway.app/api/tasks",
 
             {
@@ -127,8 +133,6 @@ function Dashboard() {
 
       e.preventDefault();
 
-      // VALIDATION
-
       if (
         !title ||
         !description ||
@@ -163,9 +167,6 @@ function Dashboard() {
 
             dueDate,
 
-            project:
-              "6a06b534ca04f1837ad4bf6d",
-
             assignedTo,
           },
 
@@ -182,48 +183,6 @@ function Dashboard() {
         setDescription("");
 
         setDueDate("");
-
-        fetchTasks();
-
-      } catch (error) {
-
-        console.log(error);
-
-      }
-    };
-
-  // UPDATE TASK
-
-  const updateStatus =
-    async (
-      id,
-      status,
-      progress
-    ) => {
-
-      try {
-
-        const token =
-          localStorage.getItem(
-            "token"
-          );
-
-        await axios.put(
-
-          `https://helpful-light-production-003e.up.railway.app/api/tasks/${id}`,
-
-          {
-            status,
-            progress,
-          },
-
-          {
-            headers: {
-              Authorization:
-                `Bearer ${token}`,
-            },
-          }
-        );
 
         fetchTasks();
 
@@ -293,11 +252,11 @@ function Dashboard() {
 
   const COLORS = [
 
-    "#ffcc00",
+    "#f59e0b",
 
-    "#3399ff",
+    "#06b6d4",
 
-    "#00ff99",
+    "#22c55e",
   ];
 
   return (
@@ -307,11 +266,65 @@ function Dashboard() {
         display: "flex",
 
         background:
-          "linear-gradient(135deg,#000000,#111111,#1a1a1a)",
+          "radial-gradient(circle at top left,#312e81,#050816,#000000)",
 
         minHeight: "100vh",
+
+        overflowX: "hidden",
+
+        position: "relative",
       }}
     >
+
+      {/* GLOW EFFECTS */}
+
+      <div
+        style={{
+          position: "absolute",
+
+          width: "450px",
+
+          height: "450px",
+
+          background:
+            "#6C63FF",
+
+          borderRadius: "50%",
+
+          filter:
+            "blur(180px)",
+
+          top: "-120px",
+
+          left: "-120px",
+
+          opacity: 0.35,
+        }}
+      />
+
+      <div
+        style={{
+          position: "absolute",
+
+          width: "400px",
+
+          height: "400px",
+
+          background:
+            "#00c6ff",
+
+          borderRadius: "50%",
+
+          filter:
+            "blur(180px)",
+
+          bottom: "-120px",
+
+          right: "-120px",
+
+          opacity: 0.35,
+        }}
+      />
 
       <Sidebar
         isOpen={isSidebarOpen}
@@ -320,17 +333,31 @@ function Dashboard() {
 
       <div
         style={{
-          marginLeft: isSidebarOpen
-            ? "270px"
-            : "40px",
+          marginLeft:
+
+            window.innerWidth < 768
+
+              ? "0px"
+
+              : isSidebarOpen
+              ? "270px"
+              : "90px",
 
           width: "100%",
 
-          padding: "40px",
+          padding:
+
+            window.innerWidth < 768
+
+              ? "15px"
+
+              : "40px",
 
           color: "white",
 
           transition: "0.4s",
+
+          zIndex: 10,
         }}
       >
 
@@ -339,6 +366,16 @@ function Dashboard() {
         <div
           style={{
             display: "flex",
+
+            flexDirection:
+
+              window.innerWidth < 768
+
+                ? "column"
+
+                : "row",
+
+            gap: "20px",
 
             justifyContent:
               "space-between",
@@ -353,17 +390,37 @@ function Dashboard() {
 
             <h1
               style={{
-                fontSize: "42px",
+
+                fontSize:
+
+                  window.innerWidth < 768
+
+                    ? "38px"
+
+                    : "64px",
+
+                fontWeight: "900",
+
+                background:
+                  "linear-gradient(90deg,#6C63FF,#00c6ff,#ff4ecd)",
+
+                WebkitBackgroundClip:
+                  "text",
+
+                WebkitTextFillColor:
+                  "transparent",
               }}
             >
-              Dashboard 
+              Dashboard 🚀
             </h1>
 
             <p
               style={{
-                color: "#cccccc",
+                color: "#94a3b8",
 
-                marginTop: "10px",
+                marginTop: "12px",
+
+                fontSize: "16px",
               }}
             >
               Welcome {user?.name}
@@ -381,20 +438,23 @@ function Dashboard() {
             }}
 
             style={{
-              padding: "14px 24px",
+              padding: "16px 26px",
 
               border: "none",
 
-              borderRadius: "14px",
+              borderRadius: "18px",
 
               background:
-                "linear-gradient(90deg,#ff4444,#cc0000)",
+                "linear-gradient(90deg,#ff4d4d,#ff0000)",
 
               color: "white",
 
               cursor: "pointer",
 
               fontWeight: "bold",
+
+              boxShadow:
+                "0 4px 20px rgba(255,0,0,0.3)",
             }}
           >
             Logout
@@ -402,124 +462,116 @@ function Dashboard() {
 
         </div>
 
-        {/* ANALYTICS */}
+        {/* STAT CARDS */}
 
         <div
           style={{
             display: "grid",
 
             gridTemplateColumns:
-              "1fr 1fr",
 
-            gap: "25px",
+              window.innerWidth < 768
+
+                ? "1fr"
+
+                : "repeat(4,1fr)",
+
+            gap: "20px",
 
             marginBottom: "40px",
           }}
         >
 
-          {/* PIE CHART */}
-
-          <div style={glassCard}>
-
-            <h2
-              style={{
-                marginBottom: "20px",
-              }}
-            >
-              Task Analytics
-            </h2>
-
-            <ResponsiveContainer
-              width="100%"
-              height={300}
-            >
-
-              <PieChart>
-
-                <Pie
-                  data={data}
-
-                  cx="50%"
-
-                  cy="50%"
-
-                  outerRadius={100}
-
-                  dataKey="value"
-
-                  label
-                >
-
-                  {data.map(
-                    (
-                      entry,
-                      index
-                    ) => (
-
-                      <Cell
-                        key={index}
-
-                        fill={
-                          COLORS[index]
-                        }
-                      />
-                    )
-                  )}
-
-                </Pie>
-
-                <Tooltip />
-
-              </PieChart>
-
-            </ResponsiveContainer>
-
+          <div style={statCard1}>
+            <Activity size={34} />
+            <h2>{tasks.length}</h2>
+            <p>Total Tasks</p>
           </div>
 
-          {/* SUMMARY */}
-
-          <div style={glassCard}>
-
-            <h2
-              style={{
-                marginBottom: "20px",
-              }}
-            >
-              Summary
-            </h2>
-
-            <div style={summaryCard}>
-              Total Tasks:
-              {tasks.length}
-            </div>
-
-            <div style={summaryCard}>
-              Pending:
-              {
-                data[0].value
-              }
-            </div>
-
-            <div style={summaryCard}>
-              In Progress:
-              {
-                data[1].value
-              }
-            </div>
-
-            <div style={summaryCard}>
-              Completed:
-              {
-                data[2].value
-              }
-            </div>
-
-            <div style={summaryCard}>
-              Overdue:
-              {overdueTasks}
-            </div>
-
+          <div style={statCard2}>
+            <Clock3 size={34} />
+            <h2>{data[0].value}</h2>
+            <p>Pending</p>
           </div>
+
+          <div style={statCard3}>
+            <TrendingUp size={34} />
+            <h2>{data[1].value}</h2>
+            <p>In Progress</p>
+          </div>
+
+          <div style={statCard4}>
+            <CheckCircle size={34} />
+            <h2>{data[2].value}</h2>
+            <p>Completed</p>
+          </div>
+
+        </div>
+
+        {/* ANALYTICS */}
+
+        <div
+          style={{
+            ...glassCard,
+
+            marginBottom: "40px",
+          }}
+        >
+
+          <h2
+            style={{
+              marginBottom: "20px",
+
+              fontSize: "28px",
+            }}
+          >
+            Performance Analytics 📊
+          </h2>
+
+          <ResponsiveContainer
+            width="100%"
+            height={350}
+          >
+
+            <PieChart>
+
+              <Pie
+                data={data}
+
+                cx="50%"
+
+                cy="50%"
+
+                outerRadius={120}
+
+                dataKey="value"
+
+                label
+              >
+
+                {data.map(
+                  (
+                    entry,
+                    index
+                  ) => (
+
+                    <Cell
+                      key={index}
+
+                      fill={
+                        COLORS[index]
+                      }
+                    />
+                  )
+                )}
+
+              </Pie>
+
+              <Tooltip />
+
+            </PieChart>
+
+          </ResponsiveContainer>
 
         </div>
 
@@ -541,9 +593,12 @@ function Dashboard() {
               style={{
                 marginBottom:
                   "20px",
+
+                fontSize:
+                  "28px",
               }}
             >
-              Create Task
+              Create Task 🚀
             </h2>
 
             <form
@@ -588,8 +643,6 @@ function Dashboard() {
                 }}
               />
 
-              {/* ASSIGN USER */}
-
               <select
 
                 value={assignedTo}
@@ -631,8 +684,6 @@ function Dashboard() {
 
               </select>
 
-              {/* DUE DATE */}
-
               <input
                 type="date"
 
@@ -661,260 +712,141 @@ function Dashboard() {
 
         )}
 
-        {/* TASK LIST */}
+        {/* TASKS */}
 
         <div style={glassCard}>
 
           <h2
             style={{
               marginBottom: "25px",
+
+              fontSize: "30px",
             }}
           >
-            Task List
+            Team Tasks 🚀
           </h2>
 
-          {tasks
+          {tasks.map((task) => (
 
-            .filter((task) => {
+            <div
+              key={task._id}
 
-              if (
-                user?.role ===
-                "admin"
-              ) {
+              style={{
 
-                return true;
-              }
+                padding: "24px",
 
-              return (
+                borderRadius: "28px",
 
-                task.assignedTo
-                  ?._id ===
-                user?._id
-              );
-            })
+                marginBottom: "24px",
 
-            .map((task) => (
+                background:
+                  "linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.03))",
+
+                border:
+                  "1px solid rgba(255,255,255,0.08)",
+
+                boxShadow:
+                  "0 8px 30px rgba(0,0,0,0.3)",
+              }}
+            >
+
+              <h3
+                style={{
+                  fontSize: "24px",
+                }}
+              >
+                {task.title}
+              </h3>
+
+              <p
+                style={{
+                  color: "#cbd5e1",
+
+                  marginTop: "12px",
+                }}
+              >
+                {task.description}
+              </p>
+
+              <p
+                style={{
+                  marginTop: "14px",
+                }}
+              >
+                Status:
+                {task.status}
+              </p>
+
+              <p>
+                Due:
+                {
+                  new Date(
+                    task.dueDate
+                  ).toLocaleDateString()
+                }
+              </p>
+
+              {/* PROGRESS BAR */}
 
               <div
-                key={task._id}
-
                 style={{
-                  padding: "20px",
+                  width: "100%",
+
+                  height: "16px",
+
+                  background:
+                    "#111827",
 
                   borderRadius:
                     "20px",
 
-                  marginBottom:
-                    "20px",
+                  overflow:
+                    "hidden",
 
-                  background:
-                    "rgba(255,255,255,0.05)",
+                  marginTop: "18px",
                 }}
               >
 
-                <h3>
-                  {task.title}
-                </h3>
-
-                <p
-                  style={{
-                    color:
-                      "#cccccc",
-
-                    marginTop:
-                      "10px",
-                  }}
-                >
-                  {
-                    task.description
-                  }
-                </p>
-
-                <p
-                  style={{
-                    marginTop:
-                      "10px",
-                  }}
-                >
-                  Assigned To:
-                  {
-                    task.assignedTo
-                      ?.name
-                  }
-                </p>
-
-                <p
-                  style={{
-                    marginTop:
-                      "10px",
-                  }}
-                >
-                  Due Date:
-                  {
-                    new Date(
-                      task.dueDate
-                    ).toLocaleDateString()
-                  }
-                </p>
-
-                {/* PROGRESS BAR */}
-
                 <div
                   style={{
-                    width: "100%",
+                    width: `${task.progress || 0}%`,
 
-                    height: "14px",
-
-                    background:
-                      "#222",
+                    height: "100%",
 
                     borderRadius:
                       "20px",
 
-                    overflow:
-                      "hidden",
+                    background:
 
-                    marginTop:
-                      "15px",
+                      task.progress < 50
+
+                        ? "linear-gradient(90deg,#facc15,#f97316)"
+
+                        : task.progress < 100
+
+                        ? "linear-gradient(90deg,#38bdf8,#6366f1)"
+
+                        : "linear-gradient(90deg,#22c55e,#16a34a)",
+
+                    transition:
+                      "0.5s",
                   }}
-                >
-
-                  <div
-                    style={{
-                      width: `${Number(task.progress) || 0}%`,
-
-                      height:
-                        "100%",
-
-                      background:
-
-                        Number(
-                          task.progress
-                        ) < 50
-
-                          ? "#ffcc00"
-
-                          : Number(
-                              task.progress
-                            ) < 100
-
-                          ? "#3399ff"
-
-                          : "#00ff99",
-
-                      transition:
-                        "0.5s",
-                    }}
-                  />
-
-                </div>
-
-                <p
-                  style={{
-                    marginTop:
-                      "10px",
-
-                    fontWeight:
-                      "bold",
-                  }}
-                >
-                  {
-                    task.progress || 0
-                  }
-                  % Completed
-                </p>
-
-                {/* MEMBER BUTTONS */}
-
-                {user?.role ===
-                  "member" && (
-
-                  <div
-                    style={{
-                      display:
-                        "flex",
-
-                      gap: "10px",
-
-                      marginTop:
-                        "15px",
-
-                      flexWrap:
-                        "wrap",
-                    }}
-                  >
-
-                    <button
-                      onClick={() =>
-                        updateStatus(
-                          task._id,
-                          "pending",
-                          25
-                        )
-                      }
-
-                      style={
-                        smallBtn
-                      }
-                    >
-                      25%
-                    </button>
-
-                    <button
-                      onClick={() =>
-                        updateStatus(
-                          task._id,
-                          "in-progress",
-                          50
-                        )
-                      }
-
-                      style={
-                        smallBtn
-                      }
-                    >
-                      50%
-                    </button>
-
-                    <button
-                      onClick={() =>
-                        updateStatus(
-                          task._id,
-                          "in-progress",
-                          75
-                        )
-                      }
-
-                      style={
-                        smallBtn
-                      }
-                    >
-                      75%
-                    </button>
-
-                    <button
-                      onClick={() =>
-                        updateStatus(
-                          task._id,
-                          "completed",
-                          100
-                        )
-                      }
-
-                      style={
-                        smallBtn
-                      }
-                    >
-                      100%
-                    </button>
-
-                  </div>
-
-                )}
+                />
 
               </div>
 
-            ))}
+              <p
+                style={{
+                  marginTop: "12px",
+                }}
+              >
+                {task.progress || 0}%
+                Completed
+              </p>
+
+            </div>
+
+          ))}
 
         </div>
 
@@ -926,86 +858,156 @@ function Dashboard() {
 
 const glassCard = {
 
-  padding: "25px",
+  padding: "28px",
 
-  borderRadius: "25px",
+  borderRadius: "32px",
 
   background:
-    "rgba(255,255,255,0.08)",
+    "rgba(255,255,255,0.06)",
 
   backdropFilter:
-    "blur(12px)",
+    "blur(18px)",
 
   border:
-    "1px solid rgba(255,255,255,0.1)",
-};
+    "1px solid rgba(255,255,255,0.08)",
 
-const summaryCard = {
-
-  padding: "16px",
-
-  marginBottom: "15px",
-
-  borderRadius: "14px",
-
-  background:
-    "rgba(255,255,255,0.05)",
-
-  fontWeight: "bold",
+  boxShadow:
+    "0 10px 40px rgba(0,0,0,0.35)",
 };
 
 const inputStyle = {
 
   width: "100%",
 
-  padding: "14px",
+  boxSizing:
+    "border-box",
 
-  marginBottom: "20px",
+  padding: "18px",
 
-  borderRadius: "14px",
+  marginBottom: "22px",
 
-  border: "none",
+  borderRadius: "18px",
+
+  border:
+    "1px solid rgba(255,255,255,0.08)",
 
   outline: "none",
 
   background:
-    "rgba(255,255,255,0.08)",
+    "rgba(255,255,255,0.06)",
 
   color: "white",
+
+  fontSize: "15px",
 };
 
 const buttonStyle = {
 
-  padding: "14px 24px",
+  width: "100%",
+
+  padding: "18px",
 
   border: "none",
 
-  borderRadius: "14px",
+  borderRadius: "18px",
 
   cursor: "pointer",
 
   background:
-    "linear-gradient(90deg,#6C63FF,#3399FF)",
+    "linear-gradient(90deg,#6C63FF,#00c6ff)",
 
   color: "white",
 
   fontWeight: "bold",
+
+  fontSize: "17px",
+
+  boxShadow:
+    "0 6px 24px rgba(108,99,255,0.4)",
 };
 
-const smallBtn = {
+const statCard1 = {
 
-  padding: "10px 16px",
+  padding: "28px",
 
-  border: "none",
-
-  borderRadius: "10px",
-
-  cursor: "pointer",
+  borderRadius: "28px",
 
   background:
-    "linear-gradient(90deg,#6C63FF,#3399FF)",
+    "linear-gradient(135deg,#4f46e5,#7c3aed)",
 
   color: "white",
+
+  display: "flex",
+
+  flexDirection: "column",
+
+  gap: "12px",
+
+  boxShadow:
+    "0 10px 30px rgba(79,70,229,0.4)",
+};
+
+const statCard2 = {
+
+  padding: "28px",
+
+  borderRadius: "28px",
+
+  background:
+    "linear-gradient(135deg,#f59e0b,#f97316)",
+
+  color: "white",
+
+  display: "flex",
+
+  flexDirection: "column",
+
+  gap: "12px",
+
+  boxShadow:
+    "0 10px 30px rgba(245,158,11,0.4)",
+};
+
+const statCard3 = {
+
+  padding: "28px",
+
+  borderRadius: "28px",
+
+  background:
+    "linear-gradient(135deg,#06b6d4,#3b82f6)",
+
+  color: "white",
+
+  display: "flex",
+
+  flexDirection: "column",
+
+  gap: "12px",
+
+  boxShadow:
+    "0 10px 30px rgba(6,182,212,0.4)",
+};
+
+const statCard4 = {
+
+  padding: "28px",
+
+  borderRadius: "28px",
+
+  background:
+    "linear-gradient(135deg,#22c55e,#16a34a)",
+
+  color: "white",
+
+  display: "flex",
+
+  flexDirection: "column",
+
+  gap: "12px",
+
+  boxShadow:
+    "0 10px 30px rgba(34,197,94,0.4)",
 };
 
 export default Dashboard;
